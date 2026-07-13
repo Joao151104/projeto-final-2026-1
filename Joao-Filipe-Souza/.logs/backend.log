@@ -287,3 +287,63 @@ INFO:     127.0.0.1:58094 - "GET /metrics HTTP/1.1" 200 OK
 INFO:     127.0.0.1:58096 - "GET /metrics HTTP/1.1" 200 OK
 {"timestamp": "2026-07-13T20:42:50.747608+00:00", "event": "http_request", "request_id": "9c308c9b-5801-4ceb-b9e2-23e16c6683f4", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 3.1}
 INFO:     127.0.0.1:58102 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:43:05.760032+00:00", "event": "http_request", "request_id": "85dca167-bc6d-4afe-9750-3b15c0887f09", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 3.93}
+INFO:     127.0.0.1:58107 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:43:20.757921+00:00", "event": "http_request", "request_id": "596d83e4-d7cf-40f8-acee-666839325171", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 5.09}
+INFO:     127.0.0.1:58115 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:43:35.953690+00:00", "event": "http_request", "request_id": "6a347132-8dd7-4e17-8990-48add58e13c2", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 23.63}
+INFO:     127.0.0.1:58117 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:43:50.853632+00:00", "event": "http_request", "request_id": "92c09929-b14b-46ab-b2ae-e858e1cb6da7", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 41.11}
+INFO:     127.0.0.1:58135 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:44:05.770148+00:00", "event": "http_request", "request_id": "e031d784-8db9-4b91-b3ce-6f545dfedabb", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 9.69}
+INFO:     127.0.0.1:58139 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:44:20.773351+00:00", "event": "http_request", "request_id": "e2963984-a104-44fc-a336-f19e5ed3cdea", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 20.94}
+INFO:     127.0.0.1:58144 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:44:35.769953+00:00", "event": "http_request", "request_id": "33800e31-e93d-4b23-b273-5f0cd90b9f63", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 15.48}
+INFO:     127.0.0.1:58145 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:44:50.808632+00:00", "event": "http_request", "request_id": "cdd85d22-4cf7-4018-83f1-2d6f3951937e", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 21.91}
+INFO:     127.0.0.1:58146 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:45:05.764614+00:00", "event": "http_request", "request_id": "f771f553-3514-4db8-a9f4-323196bd0107", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 20.13}
+INFO:     127.0.0.1:58148 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:45:20.769675+00:00", "event": "http_request", "request_id": "91921098-2f3f-4f56-83b4-b557a0b2edaf", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 18.34}
+INFO:     127.0.0.1:58153 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:45:35.768538+00:00", "event": "http_request", "request_id": "a3d01fb5-4b1d-4112-8716-508e0a3265a8", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 12.22}
+INFO:     127.0.0.1:58155 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:45:50.808806+00:00", "event": "http_request", "request_id": "ff03529e-b54a-40f2-9f38-48a17507d542", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 23.9}
+INFO:     127.0.0.1:58157 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:46:05.754884+00:00", "event": "http_request", "request_id": "2e7b118e-b887-4ee4-9d93-4fc9f1504dcb", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 10.21}
+INFO:     127.0.0.1:58158 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:46:20.763733+00:00", "event": "http_request", "request_id": "261bddd5-40e8-42f2-b7f1-f0c90850cdba", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 15.78}
+INFO:     127.0.0.1:58160 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:46:35.772317+00:00", "event": "http_request", "request_id": "92dae36d-acbb-4636-9a05-77bd81c50a7b", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 17.66}
+INFO:     127.0.0.1:58167 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:46:50.808583+00:00", "event": "http_request", "request_id": "3472c4a3-1a79-4d8b-a123-9d72e800a276", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 29.61}
+INFO:     127.0.0.1:58172 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:47:05.792784+00:00", "event": "http_request", "request_id": "95212268-e3e6-479b-8a3b-1b0286e9af47", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 28.94}
+INFO:     127.0.0.1:58177 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:47:20.769481+00:00", "event": "http_request", "request_id": "cee9706f-28f4-4f3f-a496-874bf1d7ca35", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 19.63}
+INFO:     127.0.0.1:58182 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:47:35.751004+00:00", "event": "http_request", "request_id": "01352907-392e-4b93-b62f-f8b21074a995", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 17.17}
+INFO:     127.0.0.1:58186 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:47:50.851563+00:00", "event": "http_request", "request_id": "ffba1eae-3351-4a62-8a57-bb11fbcb06f0", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 38.5}
+INFO:     127.0.0.1:58195 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:48:05.815558+00:00", "event": "http_request", "request_id": "0c07999f-37eb-43b9-8f46-248aae25ce92", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 34.21}
+INFO:     127.0.0.1:58201 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:48:20.801053+00:00", "event": "http_request", "request_id": "1cd0ad41-ef56-4900-9e9e-f0f2002eb3b0", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 25.82}
+INFO:     127.0.0.1:58206 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:48:35.774252+00:00", "event": "http_request", "request_id": "093142a8-f096-4b39-85fd-b060482f3978", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 19.98}
+INFO:     127.0.0.1:58208 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:48:50.866292+00:00", "event": "http_request", "request_id": "0ffff4f8-a120-42b3-a263-20a4731016dc", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 42.94}
+INFO:     127.0.0.1:58216 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:49:05.800497+00:00", "event": "http_request", "request_id": "5a7dbd25-c5ed-4c38-9842-0b2bee69bc40", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 12.1}
+INFO:     127.0.0.1:58221 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:49:20.743175+00:00", "event": "http_request", "request_id": "0820aad0-9192-4ab4-ab46-177fae6761a4", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 5.29}
+INFO:     127.0.0.1:58239 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:49:35.775974+00:00", "event": "http_request", "request_id": "78c19e7f-fbe8-4378-ac87-9b6c712c24f3", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 16.24}
+INFO:     127.0.0.1:58254 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:49:50.767145+00:00", "event": "http_request", "request_id": "966de122-3513-4073-b9a9-80f6e455082a", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 11.29}
+INFO:     127.0.0.1:58257 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:50:05.737202+00:00", "event": "http_request", "request_id": "531319d7-29c1-478f-99b3-b66f5e384e5c", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 4.82}
+INFO:     127.0.0.1:58262 - "GET /metrics HTTP/1.1" 200 OK
+{"timestamp": "2026-07-13T20:50:20.745215+00:00", "event": "http_request", "request_id": "65297699-3896-4100-9dae-66189a19cb47", "method": "GET", "path": "/metrics", "status": 200, "latency_ms": 9.1}
+INFO:     127.0.0.1:58269 - "GET /metrics HTTP/1.1" 200 OK
