@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: fraude-control-tower
+    env: docker
+    dockerfilePath: ./Dockerfile.render
+    plan: starter
+    healthCheckPath: /health
+    disk:
+      name: fraude-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: GF_SECURITY_ADMIN_USER
+        value: admin
+      - key: GF_SECURITY_ADMIN_PASSWORD
+        generateValue: true

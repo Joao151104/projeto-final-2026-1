@@ -1,0 +1,36 @@
+{
+  auto_https off
+  admin off
+}
+
+:{$PORT} {
+  encode zstd gzip
+
+  redir /grafana /grafana/ 308
+  redir /prometheus /prometheus/ 308
+
+  @api path /api/*
+  handle @api {
+    uri strip_prefix /api
+    reverse_proxy 127.0.0.1:8000
+  }
+
+  @backend_direct path /health /docs* /openapi.json /metrics /model-info /predict /explain-decision /metrics/*
+  handle @backend_direct {
+    reverse_proxy 127.0.0.1:8000
+  }
+
+  handle /grafana/* {
+    reverse_proxy 127.0.0.1:3000
+  }
+
+  handle /prometheus/* {
+    reverse_proxy 127.0.0.1:9090
+  }
+
+  handle {
+    root * /app/web/dist
+    try_files {path} /index.html
+    file_server
+  }
+}

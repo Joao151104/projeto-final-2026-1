@@ -1,0 +1,52 @@
+FROM node:20-alpine AS frontend-build
+WORKDIR /app/web
+COPY web/package*.json ./
+RUN npm ci
+COPY web/ ./
+RUN npm run build
+
+FROM python:3.12-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=10000
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  bash \
+  tini \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . ./
+COPY --from=frontend-build /app/web/dist /app/web/dist
+
+COPY --from=prom/prometheus:v2.54.1 /bin/prometheus /bin/prometheus
+COPY --from=prom/prometheus:v2.54.1 /usr/share/prometheus /usr/share/prometheus
+
+COPY --from=grafana/grafana:11.2.0 /usr/share/grafana /usr/share/grafana
+COPY --from=grafana/grafana:11.2.0 /etc/grafana /etc/grafana
+
+COPY --from=caddy:2.8.4-alpine /usr/bin/caddy /usr/bin/caddy
+
+RUN mkdir -p \
+  /etc/prometheus \
+  /etc/grafana/provisioning/datasources \
+  /etc/grafana/provisioning/dashboards \
+  /var/lib/grafana/dashboards \
+  /data/grafana \
+  /data/prometheus \
+  && cp /app/deploy/render/prometheus.yml /etc/prometheus/prometheus.yml \
+  && cp /app/deploy/render/grafana/provisioning/datasources/prometheus.yml /etc/grafana/provisioning/datasources/prometheus.yml \
+  && cp /app/deploy/render/grafana/provisioning/dashboards/dashboards.yml /etc/grafana/provisioning/dashboards/dashboards.yml \
+  && cp /app/monitoring/grafana/dashboards/fraud-agent-overview.json /var/lib/grafana/dashboards/fraud-agent-overview.json \
+  && chmod +x /app/deploy/render/start.sh
+
+EXPOSE 10000
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/app/deploy/render/start.sh"]
