@@ -6,27 +6,43 @@ Este projeto implementa um agente de decisao de fraude em tempo real com:
 - API para inferencia,
 - painel de monitoramento.
 
+## Demo
+- Video demonstrativo: https://youtu.be/AQHEgY4VL8w
+
 ## Estrutura
 - Veja o plano completo em `estrutura-projeto-fraude.md`.
 - Codigo principal em `src/`.
 - API em `src/api/`.
 - Interface web em `web/`.
 
-## Como rodar local
-1. Crie e ative seu ambiente virtual.
+## Como rodar localmente
+> Execute os comandos dentro da pasta `Joao-Filipe-Souza/`.
+
+1. Crie e ative seu ambiente virtual:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
 2. Instale as dependencias:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Suba a API (FastAPI):
+3. Configure as variaveis de ambiente que forem necessarias.
+
+- Para usar a explicacao com LLM, defina `OPENAI_API_KEY` em um arquivo `.env` ou no seu ambiente.
+- Se quiser alterar o modelo, defina `OPENAI_MODEL`.
+
+4. Suba a API (FastAPI) em um terminal:
 
 ```bash
 uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-4. Suba a interface web:
+5. Suba a interface web em outro terminal:
 
 ```bash
 cd web
@@ -34,15 +50,15 @@ npm install
 npm run dev
 ```
 
-Ou suba tudo com um comando (backend + frontend):
+Ou suba tudo com um comando unico a partir da pasta `Joao-Filipe-Souza/`:
 
 ```bash
 ./start_app.sh
 ```
 
-O script encerra instancias anteriores da aplicacao e inicia tudo novamente.
+Esse script sobe backend, frontend e a stack de observabilidade local conforme a configuracao do ambiente.
 
-5. Acesse:
+6. Acesse:
 - API docs: http://127.0.0.1:8000/docs
 - Control Tower: http://localhost:5173
 
@@ -134,10 +150,11 @@ Arquivos de deploy:
 3. Conecte o repositorio.
 4. Em **Environment**, selecione **Docker**.
 5. Em **Dockerfile Path**, informe `Dockerfile.render`.
-6. Em **Health Check Path**, informe `/health`.
-7. Crie um **Persistent Disk** montado em `/data`.
-8. Configure o secret `OPENAI_API_KEY` no painel do Render.
-9. Aguarde o build/deploy.
+6. Em **Root Directory / Build Context**, use `Joao-Filipe-Souza`.
+7. Em **Health Check Path**, informe `/health`.
+8. Crie um **Persistent Disk** montado em `/data`.
+9. Configure o secret `OPENAI_API_KEY` no painel do Render.
+10. Aguarde o build/deploy.
 
 No deploy em Render, o container inicia via `start_app.sh` em modo render e sobe tudo no mesmo servico:
 - API (127.0.0.1:8000)
@@ -154,12 +171,12 @@ No deploy em Render, o container inicia via `start_app.sh` em modo render e sobe
 - Grafana UI: `/grafana/`
 
 ### Persistencia
-- O blueprint ja cria Disk em `/data`.
+- O deploy manual precisa de um Persistent Disk montado em `/data`.
 - Grafana e Prometheus gravam dados nesse caminho para nao perder estado a cada deploy.
 
 ### Credenciais Grafana
 - Usuario: valor de `GF_SECURITY_ADMIN_USER`
-- Senha: valor de `GF_SECURITY_ADMIN_PASSWORD` (gerado automaticamente no blueprint)
+- Senha: valor de `GF_SECURITY_ADMIN_PASSWORD`
 
 ### Variaveis recomendadas no Render
 - `OPENAI_API_KEY` (secret)
