@@ -12,6 +12,11 @@ FRONTEND_LOG="$LOG_DIR/frontend.log"
 OBS_COMPOSE_FILE="$ROOT_DIR/docker-compose.observability.yml"
 PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
 PIP_BIN="$ROOT_DIR/.venv/bin/pip"
+CADDYFILE_PATH="$ROOT_DIR/deploy/render/Caddyfile"
+PROMETHEUS_CONFIG_PATH="/etc/prometheus/prometheus.yml"
+if [[ ! -f "$PROMETHEUS_CONFIG_PATH" ]]; then
+  PROMETHEUS_CONFIG_PATH="$ROOT_DIR/deploy/render/prometheus.yml"
+fi
 
 BACKEND_PORT=8000
 FRONTEND_PORT=5173
@@ -19,6 +24,10 @@ PROMETHEUS_PORT=9090
 GRAFANA_PORT=3000
 
 mkdir -p "$RUN_DIR" "$LOG_DIR"
+
+is_render_mode() {
+  [[ "${START_MODE:-}" == "render" || -n "${RENDER_SERVICE_ID:-}" || "${RENDER:-false}" == "true" ]]
+}
 
 kill_pid_file_process() {
   local pid_file="$1"
@@ -107,6 +116,87 @@ start_observability_stack() {
     docker compose -f "$OBS_COMPOSE_FILE" up -d
   )
 }
+
+start_render_single_service() {
+  local data_dir="${DATA_DIR:-/data}"
+  local public_port="${PORT:-10000}"
+
+  if [[ ! -x "/usr/bin/caddy" ]]; then
+    echo "Caddy nao encontrado em /usr/bin/caddy. Verifique Dockerfile.render."
+    exit 1
+  fi
+
+  if [[ ! -x "/bin/prometheus" ]]; then
+    echo "Prometheus nao encontrado em /bin/prometheus. Verifique Dockerfile.render."
+    exit 1
+  fi
+
+  if [[ ! -x "/usr/share/grafana/bin/grafana" ]]; then
+    echo "Grafana nao encontrado em /usr/share/grafana/bin/grafana. Verifique Dockerfile.render."
+    exit 1
+  fi
+
+  if [[ ! -f "$CADDYFILE_PATH" ]]; then
+    echo "Arquivo $CADDYFILE_PATH nao encontrado."
+    exit 1
+  fi
+
+  mkdir -p "$data_dir/grafana" "$data_dir/prometheus" "$data_dir/grafana/plugins" /tmp/grafana-logs
+
+  export GF_SECURITY_ADMIN_USER="${GF_SECURITY_ADMIN_USER:-admin}"
+  export GF_SECURITY_ADMIN_PASSWORD="${GF_SECURITY_ADMIN_PASSWORD:-admin}"
+  export GF_SERVER_HTTP_ADDR="127.0.0.1"
+  export GF_SERVER_HTTP_PORT="$GRAFANA_PORT"
+  export GF_SERVER_ROOT_URL="${GF_SERVER_ROOT_URL:-%(protocol)s://%(domain)s/grafana/}"
+  export GF_SERVER_SERVE_FROM_SUB_PATH="${GF_SERVER_SERVE_FROM_SUB_PATH:-true}"
+  export GF_PATHS_DATA="$data_dir/grafana"
+  export GF_PATHS_LOGS="/tmp/grafana-logs"
+  export GF_PATHS_PLUGINS="$data_dir/grafana/plugins"
+  export GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
+  export PORT="$public_port"
+
+  echo "Iniciando API em 127.0.0.1:$BACKEND_PORT"
+  (
+    cd "$ROOT_DIR"
+    python -m uvicorn src.api.main:app --host 127.0.0.1 --port "$BACKEND_PORT"
+  ) &
+  local api_pid=$!
+
+  echo "Iniciando Prometheus em 127.0.0.1:$PROMETHEUS_PORT"
+  /bin/prometheus \
+    --config.file="$PROMETHEUS_CONFIG_PATH" \
+    --storage.tsdb.path="$data_dir/prometheus" \
+    --web.listen-address="127.0.0.1:$PROMETHEUS_PORT" \
+    --web.external-url="/prometheus/" &
+  local prom_pid=$!
+
+  echo "Iniciando Grafana em 127.0.0.1:$GRAFANA_PORT"
+  /usr/share/grafana/bin/grafana server \
+    --homepath=/usr/share/grafana \
+    --config=/etc/grafana/grafana.ini &
+  local grafana_pid=$!
+
+  echo "Iniciando proxy Caddy na porta publica $public_port"
+  /usr/bin/caddy run --config "$CADDYFILE_PATH" --adapter caddyfile &
+  local caddy_pid=$!
+
+  cleanup_render() {
+    kill "$api_pid" "$prom_pid" "$grafana_pid" "$caddy_pid" 2>/dev/null || true
+    wait "$api_pid" "$prom_pid" "$grafana_pid" "$caddy_pid" 2>/dev/null || true
+  }
+
+  trap cleanup_render EXIT INT TERM
+
+  wait -n "$api_pid" "$prom_pid" "$grafana_pid" "$caddy_pid"
+  local exit_code=$?
+  cleanup_render
+  exit "$exit_code"
+}
+
+if is_render_mode; then
+  start_render_single_service
+  exit 0
+fi
 
 echo "Limpando instancias anteriores..."
 kill_pid_file_process "$BACKEND_PID_FILE"

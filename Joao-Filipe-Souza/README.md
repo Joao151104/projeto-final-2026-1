@@ -119,19 +119,31 @@ Opcionalmente, sobrescreva via `.env`:
 
 Este repositorio inclui um deploy completo em um unico container (API + frontend + Prometheus + Grafana + proxy).
 
+Importante: nao precisa usar Blueprint.
+
 Arquivos de deploy:
 - `Dockerfile.render`
 - `render.yaml`
-- `deploy/render/start.sh`
+- `start_app.sh` (modo render)
 - `deploy/render/Caddyfile`
 - `deploy/render/prometheus.yml`
 
-### Como publicar
+### Como publicar (sem Blueprint)
 1. Suba o codigo para o GitHub.
-2. No Render, clique em **New +** > **Blueprint** e selecione o repositorio.
-3. O Render vai ler `render.yaml` e criar o Web Service automaticamente.
-4. Configure o secret `OPENAI_API_KEY` no painel do Render.
-5. Aguarde o build/deploy.
+2. No Render, clique em **New +** > **Web Service**.
+3. Conecte o repositorio.
+4. Em **Environment**, selecione **Docker**.
+5. Em **Dockerfile Path**, informe `Dockerfile.render`.
+6. Em **Health Check Path**, informe `/health`.
+7. Crie um **Persistent Disk** montado em `/data`.
+8. Configure o secret `OPENAI_API_KEY` no painel do Render.
+9. Aguarde o build/deploy.
+
+No deploy em Render, o container inicia via `start_app.sh` em modo render e sobe tudo no mesmo servico:
+- API (127.0.0.1:8000)
+- Prometheus (127.0.0.1:9090)
+- Grafana (127.0.0.1:3000)
+- Caddy na porta publica `$PORT`
 
 ### Endpoints apos deploy
 - App web: `/`
@@ -149,17 +161,11 @@ Arquivos de deploy:
 - Usuario: valor de `GF_SECURITY_ADMIN_USER`
 - Senha: valor de `GF_SECURITY_ADMIN_PASSWORD` (gerado automaticamente no blueprint)
 
-### Deploy sem Blueprint (manual)
-Se preferir criar manualmente:
-1. Web Service com ambiente Docker.
-2. Dockerfile path: `Dockerfile.render`.
-3. Health check path: `/health`.
-4. Adicione Disk em `/data`.
-5. Defina env vars:
-	- `OPENAI_API_KEY` (secret)
-	- `OPENAI_MODEL=gpt-4o-mini`
-	- `GF_SECURITY_ADMIN_USER=admin`
-	- `GF_SECURITY_ADMIN_PASSWORD=<senha forte>`
+### Variaveis recomendadas no Render
+- `OPENAI_API_KEY` (secret)
+- `OPENAI_MODEL=gpt-4o-mini`
+- `GF_SECURITY_ADMIN_USER=admin`
+- `GF_SECURITY_ADMIN_PASSWORD=<senha forte>`
 
 ## Status atual
 Estrutura inicial pronta. Proximos passos:

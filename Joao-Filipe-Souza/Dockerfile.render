@@ -44,9 +44,9 @@ RUN mkdir -p \
   && cp /app/deploy/render/grafana/provisioning/datasources/prometheus.yml /etc/grafana/provisioning/datasources/prometheus.yml \
   && cp /app/deploy/render/grafana/provisioning/dashboards/dashboards.yml /etc/grafana/provisioning/dashboards/dashboards.yml \
   && cp /app/monitoring/grafana/dashboards/fraud-agent-overview.json /var/lib/grafana/dashboards/fraud-agent-overview.json \
-  && chmod +x /app/deploy/render/start.sh
+  && chmod +x /app/deploy/render/start.sh /app/start_app.sh
 
 EXPOSE 10000
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/app/deploy/render/start.sh"]
+CMD ["/bin/bash", "-lc", "START_MODE=render /app/start_app.sh"]
